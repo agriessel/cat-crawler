@@ -73,12 +73,12 @@ function expandCatalogue(url, doc) {
     var i;
     try {
         // store metadata for catalogue
-        for (i=0;i<doc['item-metadata'].length;i++) {
+        for (i=0;i<doc['items'].length;i++) {
             //console.log("CATL-FACT "+url+" "+doc['item-metadata'][i].rel+" "+doc['item-metadata'][i].val);
             storeFact({
                 subject: url,
-                predicate: doc['item-metadata'][i].rel,
-                object: doc['item-metadata'][i].val,
+                predicate: doc['catalogue-metadata'][i].rel,
+                object: doc['catalogue-metadata'][i].val,
                 context: url
             });
         }
@@ -98,8 +98,8 @@ function expandCatalogue(url, doc) {
                 object: item.href,
                 context: url
             });
-            for (var j=0;j<item['i-object-metadata'].length;j++) {
-                var mdata = item['i-object-metadata'][j];
+            for (var j=0;j<item['item-metadata'].length;j++) {
+                var mdata = item['item-metadata'][j];
                 //console.log("ITEM-FACT "+item.href+" "+mdata.rel+" "+mdata.val);
                 storeFact({
                     subject: item.href,
@@ -111,7 +111,6 @@ function expandCatalogue(url, doc) {
                 // if we find a link to a catalogue, follow it
                 if (mdata.rel == "urn:X-tsbiot:rels:isContentType" &&
                     mdata.val == "application/vnd.tsbiot.catalogue+json") {
-                        //unexplored.push(item.href);
                         unexplored.push(item.href);
                 }
             }
